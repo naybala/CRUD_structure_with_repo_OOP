@@ -2,7 +2,7 @@
 
 namespace $NAMESPACE$;
 
-use Garment\Foundations\Domain\Base\Repositories\Eloquent\BaseRepository;
+use $PROJECT_NAME\Foundations\Domain\Base\Repositories\Eloquent\BaseRepository;
 use $INTERFACE_PATH$\$CLASS_NAME$RepositoryInterface;
 use $MODEL_PATH$\$CLASS_NAME$;
 

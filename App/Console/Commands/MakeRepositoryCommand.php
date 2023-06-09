@@ -73,6 +73,7 @@ class MakeRepositoryCommand extends Command
             'MODEL_PATH' => "$projectName\\Foundations\\Domain\\$folderName",
             'INTERFACE_PATH' => "$projectName\\Foundations\\Domain\\$folderName\\Repositories",
             'CLASS_NAME' => $modelName,
+            'PROJECT_NAME' => $projectName,
         ];
     }
 
