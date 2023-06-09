@@ -1,0 +1,46 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Garment\Foundations\Domain\$FOLDER_NAME$\Repositories\Eloquent\$CAPITAL$Repository;
+use $PROJECT_NAME$\Web\Common\BaseController;
+use $PROJECT_NAME$\Web\$FOLDER_NAME$\Resources\$CAPITAL$Resource;
+
+class $CLASS_NAME$ extends BaseController
+{
+    public function __construct(
+        private $CAPITAL$Repository $$CAMEL_CASE$Repository,
+    )
+    {
+    }
+    public function index($request)
+    {
+
+    }
+    public function create()
+    {
+
+    }
+    public function store($request)
+    {
+
+    }
+
+    public function edit(string $id)
+    {
+
+    }
+
+    public function update($request, string $id)
+    {
+
+    }
+
+
+    public function destroy($request)
+    {
+
+    }
+
+
+}

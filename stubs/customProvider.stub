@@ -1,0 +1,28 @@
+<?php
+
+namespace $NAMESPACE$;
+use $REPOSITORY_INTERFACE_PATH$;
+use $REPOSITORY_PATH$;
+use Illuminate\Support\ServiceProvider;
+
+class Bind$CLASS_NAME$Provider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        $this->app->bind([
+            $CLASS_NAME$Repository::class,
+            $CLASS_NAME$RepositoryInterface::class,
+        ]);
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        //
+    }
+}

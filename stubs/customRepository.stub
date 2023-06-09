@@ -1,0 +1,16 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Garment\Foundations\Domain\Base\Repositories\Eloquent\BaseRepository;
+use $INTERFACE_PATH$\$CLASS_NAME$RepositoryInterface;
+use $MODEL_PATH$\$CLASS_NAME$;
+
+class $CLASS_NAME$Repository extends BaseRepository implements $CLASS_NAME$RepositoryInterface
+{
+    public function __construct($CLASS_NAME$ $model)
+    {
+        parent::__construct($model);
+    }
+
+}

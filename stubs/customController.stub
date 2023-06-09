@@ -1,0 +1,44 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use $PROJECT_NAME$\Web\Common\BaseController;
+use $PROJECT_NAME$\Web\$FOLDER_NAME$\Services\$CAPITAL$Service;
+use $PROJECT_NAME$\Web\$FOLDER_NAME$\Validation\Delete$CAPITAL$Request;
+use $PROJECT_NAME$\Web\$FOLDER_NAME$\Validation\Store$CAPITAL$Request;
+use $PROJECT_NAME$\Web\$FOLDER_NAME$\Validation\Update$CAPITAL$Request;
+use Illuminate\Http\Request;
+
+class $CLASS_NAME$ extends BaseController
+{
+    public function __construct(
+        private $CAPITAL$Service $$CAMEL_CASE$Service
+    ) {
+    }
+
+    public function index(Request $request)
+    {
+        return $this->$CAMEL_CASE$Service->index($request);
+    }
+    public function create()
+    {
+        return $this->$CAMEL_CASE$Service->create();
+    }
+    public function store(Store$CAPITAL$Request $request)
+    {
+        return $this->$CAMEL_CASE$Service->store($request->validated());
+    }
+    public function edit(string $id)
+    {
+        return $this->$CAMEL_CASE$Service->edit($id);
+    }
+    public function update(Update$CAPITAL$Request $request, string $id)
+    {
+        return $this->$CAMEL_CASE$Service->update($request->validated(), $id);
+    }
+    public function destroy(string $id)
+    {
+        return $this->$CAMEL_CASE$Service->destroy($id);
+    }
+
+}
