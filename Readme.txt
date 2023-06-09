@@ -1,3 +1,5 @@
+*Note- Build Repo and Common Folder Ready
+
 Step One
 ========================
 php artisan stub:publish
