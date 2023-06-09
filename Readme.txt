@@ -62,6 +62,8 @@ After hit this cmd the result will be modules/Web/../Services/..   the new Servi
 After hit this cmd the result will be modules/Web/../Validation/..   the new form validation store and update will created.
 -------------------------------------------------------------------------------------------------------------------------
 
+=========================================================================================================================================
+                                                    OR
+=========================================================================================================================================
 
-
-
+php artisan make:rootCommand Garment.Demos/Demo
