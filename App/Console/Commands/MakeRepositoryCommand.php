@@ -8,12 +8,6 @@ use Illuminate\Support\Pluralizer;
 
 class MakeRepositoryCommand extends Command
 {
-
-    //Read Me
-    //The Command (php artisan make:repo Garment.UserHellos/Hello)
-    //                                 ProjectName.FolderName/Model
-    //get customRepository.stub
-
     /**
      * The name and signature of the console command.
      *

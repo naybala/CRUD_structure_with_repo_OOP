@@ -8,9 +8,6 @@ use Illuminate\Support\Pluralizer;
 
 class MakeServiceCommand extends Command
 {
-    //php artisan make:customService Garment.Demos/DemoService
-    //                           ProjectName.FolderName/ServiceName
-    //
     //get customService.stub
     /**
      * The name and signature of the console command.
@@ -55,8 +52,17 @@ class MakeServiceCommand extends Command
     private function filterServiceName($names)
     {
         $position = strpos($names, '/');
-        $serviceName = substr($names, $position + 1);
+        $servicePosition = strpos($names, '?');
+        $serviceName = substr($names, 0, $servicePosition);
+        $serviceName = substr($serviceName, $position + 1);
         return $serviceName;
+    }
+
+    private function filterApiName($names)
+    {
+        $position = strpos($names, '=');
+        $pathName = substr($names, $position + 1);
+        return $pathName;
     }
 
     public function getStubServiceVariables()
@@ -64,16 +70,18 @@ class MakeServiceCommand extends Command
         $projectName = $this->filterProjectName($this->getSingularClassName($this->argument('name')));
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $serviceName = $this->filterServiceName($this->getSingularClassName($this->argument('name')));
+        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
         $service = substr($serviceName, 0, -7);
         $capital = $service;
         $serviceCamel = lcfirst($capital);
 
         return [
             //namespace Garment\Web\Sizes\Services;
-            'NAMESPACE' => "$projectName\\Web\\$folderName\\Services",
+            'NAMESPACE' => "$projectName\\$pathName\\$folderName\\Services",
             'CLASS_NAME' => $serviceName,
             'FOLDER_NAME' => $folderName,
             'PROJECT_NAME' => $projectName,
+            'PATH_NAME' => $pathName,
             'CAMEL_CASE' => $serviceCamel,
             'CAPITAL' => $capital,
         ];
@@ -97,7 +105,8 @@ class MakeServiceCommand extends Command
     {
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $serviceName = $this->filterServiceName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\Web\\$folderName\\Services") . "\\" . $serviceName . ".php";
+        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
+        return base_path("modules\\$pathName\\$folderName\\Services") . "\\" . $serviceName . ".php";
     }
 
     //Make Directory For custom Artisan

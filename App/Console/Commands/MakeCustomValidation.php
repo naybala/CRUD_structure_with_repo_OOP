@@ -8,7 +8,6 @@ use Illuminate\Support\Pluralizer;
 
 class MakeCustomValidation extends Command
 {
-    //php artisan make:customValidation Garment.Validaiton/DemoRequest
     /**
      * The name and signature of the console command.
      *
@@ -57,8 +56,17 @@ class MakeCustomValidation extends Command
     private function filterRequestName($names)
     {
         $position = strpos($names, '/');
-        $requestName = substr($names, $position + 1);
+        $requestPosition = strpos($names, '?');
+        $requestName = substr($names, 0, $requestPosition);
+        $requestName = substr($requestName, $position + 1);
         return $requestName;
+    }
+
+    private function filterApiName($names)
+    {
+        $position = strpos($names, '=');
+        $pathName = substr($names, $position + 1);
+        return $pathName;
     }
 
     public function getStubStoreRequestVariables()
@@ -66,9 +74,10 @@ class MakeCustomValidation extends Command
         $projectName = $this->filterProjectName($this->getSingularClassName($this->argument('name')));
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $requestName = $this->filterRequestName($this->getSingularClassName($this->argument('name')));
+        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
         $storeUpdateRequest = substr($requestName, 0, -7);
         return [
-            'NAMESPACE' => "$projectName\\Web\\$folderName\\Validation",
+            'NAMESPACE' => "$projectName\\$pathName\\$folderName\\Validation",
             'FOLDER_NAME' => $folderName,
             'PROJECT_NAME' => $projectName,
             'CAPITAL' => $storeUpdateRequest,
@@ -107,14 +116,16 @@ class MakeCustomValidation extends Command
     {
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $requestName = $this->filterRequestName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\Web\\$folderName\\Validation") . "\\" . "Store" . $requestName . ".php";
+        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
+        return base_path("modules\\$pathName\\$folderName\\Validation") . "\\" . "Store" . $requestName . ".php";
     }
 
     public function getUpdateRequestFilePath()
     {
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $requestName = $this->filterRequestName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\Web\\$folderName\\Validation") . "\\" . "Update" . $requestName . ".php";
+        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
+        return base_path("modules\\$pathName\\$folderName\\Validation") . "\\" . "Update" . $requestName . ".php";
     }
 
     //Make Directory For custom Artisan

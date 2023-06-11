@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class $CLASS_NAME$ extends Model
 {
     use HasFactory, SoftDeletes;
+      //protected $table = 'table_name';
       protected $fillable = [
 
     ];

@@ -2,11 +2,10 @@
 
 namespace $NAMESPACE$;
 
-use $PROJECT_NAME$\Web\Common\BaseController;
-use $PROJECT_NAME$\Web\$FOLDER_NAME$\Services\$CAPITAL$Service;
-use $PROJECT_NAME$\Web\$FOLDER_NAME$\Validation\Delete$CAPITAL$Request;
-use $PROJECT_NAME$\Web\$FOLDER_NAME$\Validation\Store$CAPITAL$Request;
-use $PROJECT_NAME$\Web\$FOLDER_NAME$\Validation\Update$CAPITAL$Request;
+use $PROJECT_NAME$\$PATH_NAME$\Common\BaseController;
+use $PROJECT_NAME$\$PATH_NAME$\$FOLDER_NAME$\Services\$CAPITAL$Service;
+use $PROJECT_NAME$\$PATH_NAME$\$FOLDER_NAME$\Validation\Store$CAPITAL$Request;
+use $PROJECT_NAME$\$PATH_NAME$\$FOLDER_NAME$\Validation\Update$CAPITAL$Request;
 use Illuminate\Http\Request;
 
 class $CLASS_NAME$ extends BaseController

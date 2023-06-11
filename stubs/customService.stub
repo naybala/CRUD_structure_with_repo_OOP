@@ -3,8 +3,8 @@
 namespace $NAMESPACE$;
 
 use Garment\Foundations\Domain\$FOLDER_NAME$\Repositories\Eloquent\$CAPITAL$Repository;
-use $PROJECT_NAME$\Web\Common\BaseController;
-use $PROJECT_NAME$\Web\$FOLDER_NAME$\Resources\$CAPITAL$Resource;
+use $PROJECT_NAME$\$PATH_NAME$\Common\BaseController;
+use $PROJECT_NAME$\$PATH_NAME$\$FOLDER_NAME$\Resources\$CAPITAL$Resource;
 
 class $CLASS_NAME$ extends BaseController
 {

@@ -6,31 +6,30 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Pluralizer;
 
-class MakeControllerCommand extends Command
+class MakeResourceCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:customController {name}';
+    protected $signature = 'make:customResource {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Make and Controller class';
+    protected $description = 'Command description';
 
     public function getSingularClassName($name)
     {
-        // dd($name);
         return ucwords(Pluralizer::singular($name));
     }
 
-    public function getController()
+    public function getResource()
     {
-        return __DIR__ . '/../../../stubs/customController.stub';
+        return __DIR__ . '/../../../stubs/customResource.stub';
     }
 
     private function filterProjectName($names)
@@ -49,13 +48,13 @@ class MakeControllerCommand extends Command
         return $folderName;
     }
 
-    private function filterControllerName($names)
+    private function filterResourceName($names)
     {
         $position = strpos($names, '/');
-        $controllerPosition = strpos($names, '?');
-        $controllerName = substr($names, 0, $controllerPosition);
-        $controllerName = substr($controllerName, $position + 1);
-        return $controllerName;
+        $resourcePosition = strpos($names, '?');
+        $resourceName = substr($names, 0, $resourcePosition);
+        $resourceName = substr($resourceName, $position + 1);
+        return $resourceName;
     }
 
     private function filterApiName($names)
@@ -65,32 +64,27 @@ class MakeControllerCommand extends Command
         return $pathName;
     }
 
-    public function getStubControllerVariables()
+    public function getStubResourceVariables()
     {
         $projectName = $this->filterProjectName($this->getSingularClassName($this->argument('name')));
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
-        $controllerName = $this->filterControllerName($this->getSingularClassName($this->argument('name')));
+        $serviceName = $this->filterResourceName($this->getSingularClassName($this->argument('name')));
         $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
-        $controller = substr($controllerName, 0, -10);
-        $capital = $controller;
-        $controller = lcfirst($capital);
+        $service = substr($serviceName, 0, -8);
+        $capital = $service;
         return [
-            'NAMESPACE' => "$projectName\\$pathName\\$folderName\\Controllers",
-            'CLASS_NAME' => $controllerName,
-            'FOLDER_NAME' => $folderName,
-            'PROJECT_NAME' => $projectName,
-            'PATH_NAME' => $pathName,
-            'CAMEL_CASE' => $controller,
-            'CAPITAL' => $capital,
+            //namespace Garment\Web\Sizes\Services;
+            'NAMESPACE' => "$projectName\\$pathName\\$folderName\\Resources",
+            'ClASS' => $capital,
         ];
     }
 
-    public function getControllerSourceFile()
+    public function getResourceSourceFile()
     {
-        return $this->getStubControllerContents($this->getController(), $this->getStubControllerVariables());
+        return $this->getStubResourceContents($this->getResource(), $this->getStubResourceVariables());
     }
 
-    public function getStubControllerContents($stub, $stubVariables = [])
+    public function getStubResourceContents($stub, $stubVariables = [])
     {
         $contents = file_get_contents($stub);
         foreach ($stubVariables as $search => $replace) {
@@ -99,12 +93,12 @@ class MakeControllerCommand extends Command
         return $contents;
     }
 
-    public function getControllerFilePath()
+    public function getResourceFilePath()
     {
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
-        $controllerName = $this->filterControllerName($this->getSingularClassName($this->argument('name')));
         $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\$pathName\\$folderName\\Controllers") . "\\" . $controllerName . ".php";
+        $resourceName = $this->filterResourceName($this->getSingularClassName($this->argument('name')));
+        return base_path("modules\\$pathName\\$folderName\\Resources") . "\\" . $resourceName . ".php";
     }
 
     //Make Directory For custom Artisan
@@ -130,9 +124,9 @@ class MakeControllerCommand extends Command
     public function handle()
     {
         //
-        $path = $this->getControllerFilePath();
+        $path = $this->getResourceFilePath();
         $this->makeDirectory(dirname($path));
-        $contents = $this->getControllerSourceFile();
+        $contents = $this->getResourceSourceFile();
 
         if (!$this->files->exists($path)) {
             $this->files->put($path, $contents);

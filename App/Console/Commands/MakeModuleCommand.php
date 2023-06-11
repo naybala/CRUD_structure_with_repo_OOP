@@ -9,16 +9,6 @@ use Illuminate\Support\Pluralizer;
 class MakeModuleCommand extends Command
 {
     ////////////////////////////////////////////////////////////////////////////
-    //Read Me
-
-    //The Command (php artisan make:module Garment.UserHellos/Hello)
-    //                                   ProjectName.FolderName/Model
-    //The Command (php artisan make:repo Garment.UserHellos/Hello)
-
-    //get customProvider.stub
-    //get customerRepositoryInterface.stub
-    //get customModel.stub
-    ////////////////////////////////////////////////////////////////////////////
     /**
      * The name and signature of the console command.
      *
