@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Pluralizer;
 
-class MakeRootCommand extends Command
+class MakeRootLogicCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:rootCommand {name}';
+    protected $signature = 'make:rootLogicCommand {name}';
 
     /**
      * The console command description.
@@ -60,10 +60,9 @@ class MakeRootCommand extends Command
     public function handle()
     {
 
-        $answer = $this->ask('Does the all repos and service containers were include inside the folder name "modules"??(y/n)');
-        if ($answer == "y") {
-            $answerTwo = $this->ask('Enter your service container root folder name directory');
-            $answerTwo != '' ? $this->allRun($answerTwo) : $this->repoRun();
+        $answer = $this->ask('Enter your service container root folder name directory');
+        if ($answer != " ") {
+            $this->logicRun($answer);
         } else {
             $this->info("");
             $this->info("========================= Sorry!You can't use this features =========================");
@@ -71,22 +70,15 @@ class MakeRootCommand extends Command
         }
     }
 
-    private function allRun($pathName)
+    private function logicRun($pathName)
     {
         $projectName = $this->filterProjectName($this->argument('name'));
         $folderName = $this->filterFolderName($this->argument('name'));
         $name = $this->filterName($this->argument('name'));
-        $moduleRepoCommand = "$projectName.$folderName/$name";
         $controllerCommand = "{$projectName}.{$folderName}/{$name}Controller?path={$pathName}";
         $resourceCommand = "{$projectName}.{$folderName}/{$name}Resource?path={$pathName}";
         $serviceCommand = "{$projectName}.{$folderName}/{$name}Service?path={$pathName}";
         $requestCommand = "{$projectName}.{$folderName}/{$name}Request?path={$pathName}";
-        $this->call("make:module", [
-            'name' => $moduleRepoCommand,
-        ]);
-        $this->call("make:repo", [
-            'name' => $moduleRepoCommand,
-        ]);
         $this->call("make:customController", [
             'name' => $controllerCommand,
         ]);
@@ -100,24 +92,8 @@ class MakeRootCommand extends Command
             'name' => $requestCommand,
         ]);
         $this->info("");
-        $this->info("========================= Congratulation you unlock all features =========================");
+        $this->info("========================= Congratulation you unlock all Logic features =========================");
         $this->info("");
     }
 
-    private function repoRun()
-    {
-        $projectName = $this->filterProjectName($this->argument('name'));
-        $folderName = $this->filterFolderName($this->argument('name'));
-        $name = $this->filterName($this->argument('name'));
-        $moduleRepoCommand = "$projectName.$folderName/$name";
-        $this->call("make:module", [
-            'name' => $moduleRepoCommand,
-        ]);
-        $this->call("make:repo", [
-            'name' => $moduleRepoCommand,
-        ]);
-        $this->info("");
-        $this->info("========================= Congratulation you can use repo features ==========================");
-        $this->info("");
-    }
 }

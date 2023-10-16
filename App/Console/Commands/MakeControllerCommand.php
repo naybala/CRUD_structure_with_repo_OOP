@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\MakeCommonCommand\MakeCommonCommand;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Pluralizer;
@@ -24,7 +25,6 @@ class MakeControllerCommand extends Command
 
     public function getSingularClassName($name)
     {
-        // dd($name);
         return ucwords(Pluralizer::singular($name));
     }
 
@@ -33,44 +33,12 @@ class MakeControllerCommand extends Command
         return __DIR__ . '/../../../stubs/customController.stub';
     }
 
-    private function filterProjectName($names)
-    {
-        $projectPosition = strpos($names, '.');
-        $projectName = substr($names, 0, $projectPosition);
-        return $projectName;
-    }
-
-    private function filterFolderName($names)
-    {
-        $projectPosition = strpos($names, '.');
-        $position = strpos($names, '/');
-        $folderName = substr($names, 0, $position);
-        $folderName = substr($folderName, $projectPosition + 1);
-        return $folderName;
-    }
-
-    private function filterControllerName($names)
-    {
-        $position = strpos($names, '/');
-        $controllerPosition = strpos($names, '?');
-        $controllerName = substr($names, 0, $controllerPosition);
-        $controllerName = substr($controllerName, $position + 1);
-        return $controllerName;
-    }
-
-    private function filterApiName($names)
-    {
-        $position = strpos($names, '=');
-        $pathName = substr($names, $position + 1);
-        return $pathName;
-    }
-
     public function getStubControllerVariables()
     {
-        $projectName = $this->filterProjectName($this->getSingularClassName($this->argument('name')));
-        $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
-        $controllerName = $this->filterControllerName($this->getSingularClassName($this->argument('name')));
-        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
+        $projectName = $this->commonCommand->filterProjectName($this->getSingularClassName($this->argument('name')));
+        $folderName = $this->commonCommand->filterFolderName($this->getSingularClassName($this->argument('name')));
+        $controllerName = $this->commonCommand->filterMainName($this->getSingularClassName($this->argument('name')));
+        $pathName = $this->commonCommand->filterApiName($this->getSingularClassName($this->argument('name')));
         $controller = substr($controllerName, 0, -10);
         $capital = $controller;
         $controller = lcfirst($capital);
@@ -101,17 +69,19 @@ class MakeControllerCommand extends Command
 
     public function getControllerFilePath()
     {
-        $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
-        $controllerName = $this->filterControllerName($this->getSingularClassName($this->argument('name')));
-        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\$pathName\\$folderName\\Controllers") . "\\" . $controllerName . ".php";
+        $folderName = $this->commonCommand->filterFolderName($this->getSingularClassName($this->argument('name')));
+        $controllerName = $this->commonCommand->filterMainName($this->getSingularClassName($this->argument('name')));
+        $pathName = $this->commonCommand->filterApiName($this->getSingularClassName($this->argument('name')));
+        return base_path("modules" . DIRECTORY_SEPARATOR . $pathName . DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR . "Controllers") . DIRECTORY_SEPARATOR . $controllerName . ".php";
     }
 
     //Make Directory For custom Artisan
     protected $files;
 
-    public function __construct(Filesystem $files)
-    {
+    public function __construct(
+        Filesystem $files,
+        private MakeCommonCommand $commonCommand,
+    ) {
         parent::__construct();
         $this->files = $files;
     }

@@ -171,21 +171,21 @@ class MakeModuleCommand extends Command
     {
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $modelName = $this->filterModelName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\Foundations\\Domain\\$folderName") . '\\' . $modelName . '.php';
+        return base_path("modules" . DIRECTORY_SEPARATOR . "Foundations" . DIRECTORY_SEPARATOR . "Domain" . DIRECTORY_SEPARATOR . $folderName) . DIRECTORY_SEPARATOR . $modelName . '.php';
     }
 
     public function getProviderFilePath()
     {
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $modelName = $this->filterModelName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\Foundations\\Domain\\$folderName\\Providers") . "\\" . "Bind" . $modelName . "Provider.php";
+        return base_path("modules" . DIRECTORY_SEPARATOR . "Foundations" . DIRECTORY_SEPARATOR . "Domain" . DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR . "Providers") . DIRECTORY_SEPARATOR . "Bind" . $modelName . "Provider.php";
     }
 
     public function getRepositoryInterfaceFilePath()
     {
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $modelName = $this->filterModelName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\Foundations\\Domain\\$folderName\\Repositories") . "\\" . $modelName . "RepositoryInterface.php";
+        return base_path("modules" . DIRECTORY_SEPARATOR . "Foundations" . DIRECTORY_SEPARATOR . "Domain" . DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR . "Repositories") . DIRECTORY_SEPARATOR . $modelName . "RepositoryInterface.php";
     }
 
     /////////////////////////////////////////////////////////////
@@ -203,8 +203,8 @@ class MakeModuleCommand extends Command
     {
         if (!$this->files->isDirectory($path)) {
             $this->files->makeDirectory($path, 0777, true, true);
-            $this->files->makeDirectory($path . "\\" . "Providers", 0777, true, true);
-            $this->files->makeDirectory($path . "\\" . "Repositories", 0777, true, true);
+            $this->files->makeDirectory($path . DIRECTORY_SEPARATOR . "Providers", 0777, true, true);
+            $this->files->makeDirectory($path . DIRECTORY_SEPARATOR . "Repositories", 0777, true, true);
         }
         return $path;
     }

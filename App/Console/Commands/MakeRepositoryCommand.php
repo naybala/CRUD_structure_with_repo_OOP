@@ -91,7 +91,7 @@ class MakeRepositoryCommand extends Command
     {
         $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
         $modelName = $this->filterModelName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\Foundations\\Domain\\$folderName\\Repositories\\Eloquent") . "\\" . $modelName . "Repository.php";
+        return base_path("modules" . DIRECTORY_SEPARATOR . "Foundations" . DIRECTORY_SEPARATOR . "Domain" . DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR . "Repositories" . DIRECTORY_SEPARATOR . "Eloquent") . DIRECTORY_SEPARATOR . $modelName . "Repository.php";
     }
 
     //Make Directory For custom Artisan

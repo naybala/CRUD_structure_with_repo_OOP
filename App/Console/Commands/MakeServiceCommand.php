@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\MakeCommonCommand\MakeCommonCommand;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Pluralizer;
@@ -33,44 +34,12 @@ class MakeServiceCommand extends Command
         return __DIR__ . '/../../../stubs/customService.stub';
     }
 
-    private function filterProjectName($names)
-    {
-        $projectPosition = strpos($names, '.');
-        $projectName = substr($names, 0, $projectPosition);
-        return $projectName;
-    }
-
-    private function filterFolderName($names)
-    {
-        $projectPosition = strpos($names, '.');
-        $position = strpos($names, '/');
-        $folderName = substr($names, 0, $position);
-        $folderName = substr($folderName, $projectPosition + 1);
-        return $folderName;
-    }
-
-    private function filterServiceName($names)
-    {
-        $position = strpos($names, '/');
-        $servicePosition = strpos($names, '?');
-        $serviceName = substr($names, 0, $servicePosition);
-        $serviceName = substr($serviceName, $position + 1);
-        return $serviceName;
-    }
-
-    private function filterApiName($names)
-    {
-        $position = strpos($names, '=');
-        $pathName = substr($names, $position + 1);
-        return $pathName;
-    }
-
     public function getStubServiceVariables()
     {
-        $projectName = $this->filterProjectName($this->getSingularClassName($this->argument('name')));
-        $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
-        $serviceName = $this->filterServiceName($this->getSingularClassName($this->argument('name')));
-        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
+        $projectName = $this->commonCommand->filterProjectName($this->getSingularClassName($this->argument('name')));
+        $folderName = $this->commonCommand->filterFolderName($this->getSingularClassName($this->argument('name')));
+        $serviceName = $this->commonCommand->filterMainName($this->getSingularClassName($this->argument('name')));
+        $pathName = $this->commonCommand->filterApiName($this->getSingularClassName($this->argument('name')));
         $service = substr($serviceName, 0, -7);
         $capital = $service;
         $serviceCamel = lcfirst($capital);
@@ -103,17 +72,19 @@ class MakeServiceCommand extends Command
 
     public function getServiceFilePath()
     {
-        $folderName = $this->filterFolderName($this->getSingularClassName($this->argument('name')));
-        $serviceName = $this->filterServiceName($this->getSingularClassName($this->argument('name')));
-        $pathName = $this->filterApiName($this->getSingularClassName($this->argument('name')));
-        return base_path("modules\\$pathName\\$folderName\\Services") . "\\" . $serviceName . ".php";
+        $folderName = $this->commonCommand->filterFolderName($this->getSingularClassName($this->argument('name')));
+        $serviceName = $this->commonCommand->filterMainName($this->getSingularClassName($this->argument('name')));
+        $pathName = $this->commonCommand->filterApiName($this->getSingularClassName($this->argument('name')));
+        return base_path("modules" . DIRECTORY_SEPARATOR . $pathName . DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR . "Services") . DIRECTORY_SEPARATOR . $serviceName . ".php";
     }
 
     //Make Directory For custom Artisan
     protected $files;
 
-    public function __construct(Filesystem $files)
-    {
+    public function __construct(
+        Filesystem $files,
+        private MakeCommonCommand $commonCommand,
+    ) {
         parent::__construct();
         $this->files = $files;
     }
